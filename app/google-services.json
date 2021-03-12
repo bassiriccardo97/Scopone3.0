@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "535588674315",
+    "project_id": "scopone3",
+    "storage_bucket": "scopone3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:535588674315:android:0ac75b9cee60b7f5b1e00e",
+        "android_client_info": {
+          "package_name": "com.example.scopone30"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "535588674315-075fodf14i8j0prk03l7br38aakhe900.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.scopone30",
+            "certificate_hash": "46e795ba4d17c714d22cef027b1d955f77fe0726"
+          }
+        },
+        {
+          "client_id": "535588674315-2796ph5lrrq5nsulo3dn688ahkj680a4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJslP_WInD0BhkEOFUERv3i6i0KsM1-24"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "535588674315-2796ph5lrrq5nsulo3dn688ahkj680a4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

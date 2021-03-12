@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Scopone</string>
+    <string name="welcome_to_scopone">Welcome to Scopone!</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="please_login_in_or_register">Please login in or register</string>
+    <string name="or">Or</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="setup_nickname_hint">Choose a nickname</string>
+    <string name="setup_game_hint">Create a new game or join and existing one</string>
+    <string name="game_name">Room name</string>
+    <string name="game_password">Room password</string>
+    <string name="create_game">Create</string>
+    <string name="join_game">Join</string>
+    <string name="nickname">Nickname</string>
+    <string name="waiting">Waiting for players…</string>
+    <string name="start">Start</string>
+    <string name="turn">Your turn!</string>
+</resources>
