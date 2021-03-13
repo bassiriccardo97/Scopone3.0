@@ -70,8 +70,8 @@ public class GameSetupActivity extends AppCompatActivity implements View.OnClick
         gameRef.child("turn").setValue(-1);
         gameRef.child("taken0").setValue(0);
         gameRef.child("taken1").setValue(0);
-        gameRef.child("playedCard").child("pl").setValue(-1);
-        gameRef.child("playedCard").child("card").setValue("empty");
+        //gameRef.child("playedCard").child("pl").setValue(-1);
+        gameRef.child("lastCard").setValue("empty");
 
         Intent waitingRoom = new Intent(GameSetupActivity.this, WaitingRoomActivity.class);
         waitingRoom.putExtra("firebaseURL", firebaseURL);

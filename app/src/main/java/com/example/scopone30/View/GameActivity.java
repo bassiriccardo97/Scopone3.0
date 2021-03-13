@@ -39,6 +39,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private List<Card> cardsBoard = new ArrayList<>();
     private List<Card> takenDeck = new ArrayList<>();
     private boolean turn = false;
+    private int playerTurn = -1;
 
     private DatabaseReference thisPlayerHandRef;
     private DatabaseReference cardsOnBoardRef;
@@ -120,23 +121,23 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private ValueEventListener playedCardListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
-            int player = snapshot.child("pl").getValue(int.class);
-            String card = snapshot.child("card").getValue(String.class);
+            //int player = snapshot.child("pl").getValue(int.class);
+            String card = snapshot.getValue(String.class);
 
-            if (player == plNum || player == -1 || card.equals("empty")) {
+            if (playerTurn == plNum || card.equals("empty")) {
                 east.setBackgroundResource(R.drawable.back);
                 north.setBackgroundResource(R.drawable.back);
                 west.setBackgroundResource(R.drawable.back);
             } else {
-                if ((player == plNum + 1 && plNum != 4) || (plNum == 4 && player == 0)) {
+                if ((playerTurn == plNum + 1 && plNum != 4) || (plNum == 4 && playerTurn == 0)) {
                     setPlayedCardRes(east, card);
                     north.setBackgroundResource(R.drawable.back);
                     west.setBackgroundResource(R.drawable.back);
-                } else if ((player == plNum + 2 && plNum != 4) || (plNum == 4 && player == 1)) {
+                } else if ((playerTurn == plNum + 2 && plNum != 4) || (plNum == 4 && playerTurn == 1)) {
                     setPlayedCardRes(north, card);
                     east.setBackgroundResource(R.drawable.back);
                     west.setBackgroundResource(R.drawable.back);
-                } else if ((player == plNum + 3 && plNum != 4) || (plNum == 4 && player == 2)) {
+                } else if ((playerTurn == plNum + 3 && plNum != 4) || (plNum == 4 && playerTurn == 2)) {
                     setPlayedCardRes(west, card);
                     east.setBackgroundResource(R.drawable.back);
                     north.setBackgroundResource(R.drawable.back);
@@ -152,26 +153,29 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private ValueEventListener turnListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
-            int turn1 = snapshot.getValue(int.class);
+            playerTurn = snapshot.getValue(int.class);
             yourTurn = findViewById(R.id.your_turn);
             yourTurn.setVisibility(View.INVISIBLE);
             yourTurn.setTextColor(Color.YELLOW);
-            if (turn1 == plNum) {
+            if (playerTurn == plNum) {
                 yourTurn.setVisibility(View.VISIBLE);
                 turn = true;
                 east_name.setTextColor(Color.WHITE);
                 north_name.setTextColor(Color.WHITE);
                 west_name.setTextColor(Color.WHITE);
             }else {
-                if ((turn1 == plNum + 1 && plNum != 4) || (plNum == 4 && turn1 == 0)){
+                if ((playerTurn == plNum + 1 && plNum != 3) || (plNum == 3 && playerTurn == 0)){
+                    turn = false;
                     east_name.setTextColor(Color.RED);
                     north_name.setTextColor(Color.WHITE);
                     west_name.setTextColor(Color.WHITE);
-                }else if ((turn1 == plNum + 2 && plNum != 4) || (plNum == 4 && turn1 == 1)){
+                }else if ((playerTurn == plNum + 2 && plNum != 3) || (plNum == 3 && playerTurn == 1)){
+                    turn = false;
                     north_name.setTextColor(Color.RED);
                     east_name.setTextColor(Color.WHITE);
                     west_name.setTextColor(Color.WHITE);
-                }else if ((turn1 == plNum + 3 && plNum != 4) || (plNum == 4 && turn1 == 2)){
+                }else if ((playerTurn == plNum + 3 && plNum != 3) || (plNum == 3 && playerTurn == 2)){
+                    turn = false;
                     west_name.setTextColor(Color.RED);
                     east_name.setTextColor(Color.WHITE);
                     north_name.setTextColor(Color.WHITE);
@@ -229,9 +233,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 player2Name = snapshot.child("2").getValue(String.class);
                 player3Name = snapshot.child("3").getValue(String.class);
 
-                int turn1 = snapshot.child("turn").getValue(int.class);
+                playerTurn = snapshot.child("turn").getValue(int.class);
                 yourTurn = findViewById(R.id.your_turn);
-                if (turn1 == plNum) {
+                if (playerTurn == plNum) {
                     yourTurn.setVisibility(View.VISIBLE);
                     turn = true;
                     east_name.setTextColor(Color.WHITE);
@@ -239,15 +243,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     west_name.setTextColor(Color.WHITE);
                 }else {
                     yourTurn.setVisibility(View.INVISIBLE);
-                    if ((turn1 == plNum + 1 && plNum != 4) || (plNum == 4 && turn1 == 0)){
+                    if ((playerTurn == plNum + 1 && plNum != 3) || (plNum == 3 && playerTurn == 0)){
                         east_name.setTextColor(Color.RED);
                         north_name.setTextColor(Color.WHITE);
                         west_name.setTextColor(Color.WHITE);
-                    }else if ((turn1 == plNum + 2 && plNum != 4) || (plNum == 4 && turn1 == 1)){
+                    }else if ((playerTurn == plNum + 2 && plNum != 3) || (plNum == 3 && playerTurn == 1)){
                         north_name.setTextColor(Color.RED);
                         east_name.setTextColor(Color.WHITE);
                         west_name.setTextColor(Color.WHITE);
-                    }else if ((turn1 == plNum + 3 && plNum != 4) || (plNum == 4 && turn1 == 2)){
+                    }else if ((playerTurn == plNum + 3 && plNum != 3) || (plNum == 3 && playerTurn == 2)){
                         west_name.setTextColor(Color.RED);
                         east_name.setTextColor(Color.WHITE);
                         north_name.setTextColor(Color.WHITE);
@@ -299,7 +303,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         endedRef.addValueEventListener(endedListener);
         takenRef = gameRef.child("taken" + plNum % 2).getRef();
         takenRef.addValueEventListener(takenListener);
-        playedCardRef = gameRef.child("playedCard").getRef();
+        playedCardRef = gameRef.child("lastCard").getRef();
         playedCardRef.addValueEventListener(playedCardListener);
 
         if (plNum == 3) {
@@ -379,11 +383,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         north = findViewById(R.id.cardNorth);
         east = findViewById(R.id.cardEast);
         west = findViewById(R.id.cardWest);
-        north.setImageResource(R.drawable.back);
-        west.setImageResource(R.drawable.back);
+        north.setBackgroundResource(R.drawable.back);
+        west.setBackgroundResource(R.drawable.back);
         west.setRotation(90);
         west.setMaxHeight(north.getWidth());
-        east.setImageResource(R.drawable.back);
+        east.setBackgroundResource(R.drawable.back);
         east.setRotation(90);
         east.setMaxHeight(north.getWidth());
 
@@ -790,12 +794,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         if (getCardValue(thisPlayer.hand.get(playedCard)) == 1){
             assoPigliaTutto(playedCard);
+            playedCard = -1;
             return;
         }
         if (cardsBoard.isEmpty()){
             cardsOnBoardRef.child(String.valueOf(0)).setValue(thisPlayer.hand.get(playedCard));
             thisPlayerHandRef.child(String.valueOf(playedCard)).setValue(new Card("empty"));
-            nextTurn();
+            playedCard = -1;
             return;
         }
 
@@ -825,7 +830,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if (options.isEmpty()){
             cardsOnBoardRef.child(String.valueOf(getFirstEmptyInBoard())).setValue(thisPlayer.hand.get(playedCard));
             thisPlayerHandRef.child(String.valueOf(playedCard)).setValue(new Card("empty"));
-            nextTurn();
+            playedCard = -1;
             return;
         }
 
@@ -843,7 +848,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             }
             takenRef.child(String.valueOf(takenIndex)).setValue(thisPlayer.hand.get(playedCard));
             thisPlayerHandRef.child(String.valueOf(playedCard)).setValue(new Card("empty"));
-            nextTurn();
+            playedCard = -1;
         }
     }
 
@@ -919,6 +924,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private void enableBoardButtons(){
 
+        if (playedCard == -1){
+            return;
+        }
+
         boolean toSelect = false;
 
         for (List<Integer> optionList : options){
@@ -938,13 +947,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void playCard(View v){
-        playedCardRef.child("pl").setValue(plNum);
-        playedCardRef.child("card").setValue(thisPlayer.hand.get(playedCard).name);
+        //playedCardRef.child("pl").setValue(plNum);
+        playedCardRef.setValue(thisPlayer.hand.get(playedCard).name);
         v.animate().setDuration(1000).scaleXBy(0.5f).scaleYBy(0.5f).translationY(-400f).withEndAction(() -> {
             v.setVisibility(View.INVISIBLE);
             v.setClickable(false);
             evaluateOptions();
             enableBoardButtons();
+            nextTurn();
         }).start();
     }
 
@@ -967,11 +977,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private void nextTurn(){
         playedCard = -1;
-        playedCardRef.child("pl").setValue(-1);
-        playedCardRef.child("card").setValue(thisPlayer.hand.get(playedCard).name);
+        //playedCardRef.child("pl").setValue(-1);
+        playedCardRef.setValue("empty");
         choices.clear();
         options.clear();
-        if (plNum < 4) {
+        if (plNum < 3) {
             turnRef.setValue(plNum + 1);
         }else {
             turnRef.setValue(0);
