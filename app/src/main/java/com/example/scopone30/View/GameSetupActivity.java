@@ -51,9 +51,6 @@ public class GameSetupActivity extends AppCompatActivity implements View.OnClick
         pc += 1;
         plNum = 0;
 
-        //System.out.println("PROVO A SCRIVERE");
-        //database.getReference(gameName).setValue(0);
-
         //init and set db
         username = nickname.getText().toString();
         myRef.child(gameName).child(String.valueOf(plNum)).setValue(username);

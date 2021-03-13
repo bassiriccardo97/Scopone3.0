@@ -947,7 +947,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void playCard(View v){
-        //playedCardRef.child("pl").setValue(plNum);
         playedCardRef.setValue(thisPlayer.hand.get(playedCard).name);
         v.animate().setDuration(1000).scaleXBy(0.5f).scaleYBy(0.5f).translationY(-400f).withEndAction(() -> {
             v.setVisibility(View.INVISIBLE);
@@ -977,7 +976,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private void nextTurn(){
         playedCard = -1;
-        //playedCardRef.child("pl").setValue(-1);
         playedCardRef.setValue("empty");
         choices.clear();
         options.clear();
